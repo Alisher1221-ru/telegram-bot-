@@ -1,11 +1,10 @@
-import { config } from "dotenv";
-import { num, cleanEnv, str } from "envalid";
-
-config()
-
-const env = cleanEnv(process.env, {
-    PORT: num(),
-    TOKEN: str()
-})
-
-export default env
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var dotenv_1 = require("dotenv");
+var envalid_1 = require("envalid");
+(0, dotenv_1.config)();
+var env = (0, envalid_1.cleanEnv)(process.env, {
+    PORT: (0, envalid_1.num)(),
+    TOKEN: (0, envalid_1.str)()
+});
+exports.default = env;
