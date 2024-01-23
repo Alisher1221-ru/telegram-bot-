@@ -64,7 +64,7 @@ bot.on('message', function (ctx) { return __awaiter(void 0, void 0, void 0, func
             case 2:
                 if (message.startsWith("/start")) {
                     ctx.reply("\u0414\u043E\u0431\u0440\u043E \u043F\u043E\u0436\u0430\u043B\u043E\u0432\u0430\u0442\u044C ".concat(ctx.from.first_name, " \u0432 \u043D\u0430\u0448 \u0431\u043E\u0442 \uD83D\uDE0A\n    \n\u0447\u0442\u043E \u043C\u043E\u0436\u0435\u0442 \u0431\u043E\u0442:  \u0441\u043A\u0430\u0447\u0430\u0442\u044C \u043C\u0443\u0437\u044B\u043A\u0443 \u043F\u043E \u043D\u0430\u0437\u0432\u0430\u043D\u0438\u044E"), {
-                        reply_markup: new grammy_1.InlineKeyboard().text('OK', 'stay'),
+                        reply_markup: new grammy_1.InlineKeyboard().text('OK', 'stay').text('NO', 'left'),
                     });
                     return [2 /*return*/];
                 }
@@ -76,7 +76,7 @@ bot.on('message', function (ctx) { return __awaiter(void 0, void 0, void 0, func
                 return [3 /*break*/, 4];
             case 3:
                 error_1 = _c.sent();
-                console.log(error_1.message);
+                console.log(error_1);
                 return [3 /*break*/, 4];
             case 4: return [2 /*return*/];
         }
@@ -87,7 +87,9 @@ bot.on("callback_query:data", function (ctx) { return __awaiter(void 0, void 0, 
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                ctx.reply('если что-то понадобится, пишите 😊');
+                if (true) {
+                    ctx.reply('если что-то понадобится, пишите 😊');
+                }
                 return [4 /*yield*/, ctx.answerCallbackQuery()];
             case 1:
                 _a.sent();

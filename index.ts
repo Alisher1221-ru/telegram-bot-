@@ -12,6 +12,8 @@ bot.use(
     })
 );
 
+let signup = false
+
 bot.on('message', async (ctx: any) => {
     try { 
         const message = ctx.message.text;
@@ -23,10 +25,8 @@ bot.on('message', async (ctx: any) => {
         }
 
         if (message.startsWith("/start")) {
-            ctx.reply(`Добро пожаловать ${ctx.from.first_name} в наш бот 😊
-    
-что может бот:  скачать музыку по названию`, {
-                reply_markup: new InlineKeyboard().text('OK', 'stay'),
+            ctx.reply(`Добро пожаловать в наш бот ${ctx.from.first_name} 😊`, {
+                reply_markup: new InlineKeyboard().text('login', 'stay').text('signup', 'signup'),
             });
             return;
         }
@@ -36,17 +36,25 @@ bot.on('message', async (ctx: any) => {
             return;
         }
 
+        if (signup) {
+            
+        }
+
         ctx.reply('я пока не могу поддержать диалог 😑');
     } catch (error) {
-        console.log(error.message);
+        console.log(error);
     }
 });
 
 
-bot.callbackQuery("ok")
-
 bot.on("callback_query:data", async (ctx) => {
-    ctx.reply('если что-то понадобится, пишите 😊')
+    if (ctx.callbackQuery.data === 'signup') {
+        ctx.reply('пишите имя')
+        signup = true
+        await ctx.answerCallbackQuery();
+        return
+    }
+    
     await ctx.answerCallbackQuery();
 });
 

@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js"
+    "dev": "npx nodemon index.ts"
   },
   "keywords": [],
   "author": "",
@@ -16,6 +16,7 @@
     "@grammyjs/runner": "^2.0.3",
     "dotenv": "^16.3.1",
     "envalid": "^8.0.0",
-    "grammy": "^1.20.3"
+    "grammy": "^1.20.3",
+    "ts-node": "^10.9.2"
   }
 }
