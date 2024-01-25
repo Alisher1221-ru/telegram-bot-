@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "dbmate": "^2.11.0",
     "nodemon": "^3.0.2"
   },
   "dependencies": {
@@ -17,6 +18,7 @@
     "dotenv": "^16.3.1",
     "envalid": "^8.0.0",
     "grammy": "^1.20.3",
+    "jsonwebtoken": "^9.0.2",
     "ts-node": "^10.9.2"
   }
 }
