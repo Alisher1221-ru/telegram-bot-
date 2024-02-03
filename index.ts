@@ -1,16 +1,34 @@
 import env from "./config/env.config.js";
-import { Bot, GrammyError, HttpError, InlineKeyboard, Keyboard } from "grammy";
+import { Bot, GrammyError, HttpError, Keyboard } from "grammy";
 import { sequentialize, run } from "@grammyjs/runner";
-import { MyContext, SessionSetup } from "./session";
-import { conversations, createConversation } from "@grammyjs/conversations";
-import { greetingConvesation } from "./conversation/greeting.conversation";
 import axios from "axios";
+import { Menu, MenuRange } from "@grammyjs/menu";
 
-const bot = new Bot<MyContext>(env.TOKEN);
+const bot = new Bot(env.TOKEN);
+const menu = new Menu("dynamic");
 
-// bot.use(SessionSetup(env.TOKEN));
-// bot.use(conversations());
-// bot.use(createConversation(greetingConvesation));
+bot.use(menu);
+let data: any = [];
+
+menu
+  .dynamic(() => {
+    const range = new MenuRange();
+    data.map((el: any) => {
+      for (let i = 0; i < el.length; i++) {
+        range.text('ads', (ctx) => ctx.reply(`You chose ${i}`)).row();
+      }
+    })
+    return range;
+  })
+  .text("Cancel", (ctx) => ctx.deleteMessage());
+
+bot.use(
+  sequentialize((ctx: any) => {
+    const chat = ctx.chat?.id.toString();
+    const user = ctx.from?.id.toString();
+    return [chat, user].filter((con) => con !== undefined);
+  })
+);
 
 export async function setCommands(bot: any) {
   await bot.api.setMyCommands([
@@ -30,24 +48,16 @@ export async function setCommands(bot: any) {
 }
 setCommands(bot);
 
-bot.use(
-  sequentialize((ctx: any) => {
-    const chat = ctx.chat?.id.toString();
-    const user = ctx.from?.id.toString();
-    return [chat, user].filter((con) => con !== undefined);
-  })
-);
-
 bot.command("location", (ctx) => {
   ctx.api.sendLocation(ctx.chat.id, 41.560067458778754, 60.60795898367056);
 });
 
 bot.command("shopping_pay", (ctx) => {
-  ctx.reply("наш сайт 🍱",{
+  ctx.reply("наш сайт 🍱", {
     reply_markup: new Keyboard()
-    .webApp("shopping-pay", 'https://shopping-pay.netlify.app/')
-    .resized()
-  })
+      .webApp("shopping-pay", "https://shopping-pay.netlify.app/")
+      .resized(),
+  });
 });
 
 bot.command("start", async (ctx) => {
@@ -57,10 +67,8 @@ bot.command("start", async (ctx) => {
       .text("категории")
       .resized(),
   });
-  await ctx.conversation.enter("greetingConvesation");
+  // await ctx.conversation.enter("greetingConvesation");
 });
-
-let data: any = [];
 
 bot.on("message", async (ctx: any) => {
   try {
@@ -72,11 +80,14 @@ bot.on("message", async (ctx: any) => {
       await ctx.api.deleteMessage(chatId, messageId);
     }
     if (message === "категории") {
-      axios
+      await axios
         .get("http://localhost:3006/categorys")
-        .then((res) => console.log(data.push(res)))
+        .then((res) => console.log(data.push(res.data)))
         .catch((error) => console.log(error));
-      ctx.reply(data);
+
+      ctx.reply("категории", {
+        reply_markup: menu,
+      });
       return;
     }
 
@@ -100,3 +111,7 @@ bot.catch((err) => {
 });
 
 run(bot);
+
+// bot.use(SessionSetup(env.TOKEN));
+// bot.use(conversations());
+// bot.use(createConversation(greetingConvesation));
