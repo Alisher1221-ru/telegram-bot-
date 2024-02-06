@@ -8,16 +8,16 @@ const bot = new Bot(env.TOKEN);
 const menu = new Menu("dynamic");
 
 bot.use(menu);
-let data: any = [];
+let data: String[] = [];
 
 menu
   .dynamic(() => {
     const range = new MenuRange();
-    data.map((el: any) => {
+    data.map((el: any, index: number) => {
       for (let i = 0; i < el.length; i++) {
-        range.text('ads', (ctx) => ctx.reply(`You chose ${i}`)).row();
+        range.text("as", (ctx) => ctx.reply(`You chose`)).row();
       }
-    })
+    });
     return range;
   })
   .text("Cancel", (ctx) => ctx.deleteMessage());
